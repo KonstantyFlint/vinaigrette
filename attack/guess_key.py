@@ -1,3 +1,4 @@
+from collections import deque
 from itertools import cycle
 from math import dist
 
@@ -7,7 +8,7 @@ LETTER_FREQUENCIES = [0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02
 # ENGLISH FREQUENCIES
 
 
-def get_frequencies_for_parts(cipher: str, key_length: int) -> tuple[list[float]]:
+def get_frequencies_for_parts(cipher: str, key_length: int) -> tuple[deque[float]]:
     buckets = [[0 for _ in range(26)] for _ in range(key_length)]
     for bucket_number, letter in zip(cycle(range(key_length)), cipher):
         buckets[bucket_number][ord(letter) - ord('a')] += 1
@@ -15,11 +16,11 @@ def get_frequencies_for_parts(cipher: str, key_length: int) -> tuple[list[float]
     result = []
     for bucket in buckets:
         bucket_sum = sum(bucket)
-        result.append([count / bucket_sum for count in bucket])
+        result.append(deque(count / bucket_sum for count in bucket))
     return tuple(result)
 
 
-def get_best_offset(frequencies: list[float]) -> int:
+def get_best_offset(frequencies: deque[float]) -> int:
     best_offset = 0
     best_distance = float("inf")
     for offset in range(26):
@@ -27,7 +28,7 @@ def get_best_offset(frequencies: list[float]) -> int:
         if distance < best_distance:
             best_distance = distance
             best_offset = offset
-        frequencies.append(frequencies.pop(0))
+        frequencies.append(frequencies.popleft())
     return best_offset
 
 

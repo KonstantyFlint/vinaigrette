@@ -1,13 +1,13 @@
-from copy import copy
+from collections import deque
 from statistics import mean
 
 
 def get_coincidence_counts(cipher: str, max_key_length: int):
     base = list(cipher)
-    shifted = copy(base)
+    shifted = deque(base)
     counts = []
     for offset in range(1, max_key_length + 1):
-        shifted.append(shifted.pop(0))
+        shifted.append(shifted.popleft())
         count = sum(1 if a == b else 0 for a, b in zip(base, shifted))
         counts.append(count)
     return counts
