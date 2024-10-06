@@ -2,7 +2,7 @@ import pytest
 
 from attack.guess_key import guess_key
 from test.conftest import get_cleaned_text, random_key
-from vinaigrette import encrypt, decrypt
+from algorithm.vinaigrette import encrypt, decrypt
 
 ALICE_IN_WONDERLANDS = get_cleaned_text("test/books/alice_in_wonderland.txt")
 CHRISTMAS_CAROL = get_cleaned_text("test/books/a_christmas_carol.txt")
